@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>券码核销系统</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div id="loginPage" class="page active">
+        <div class="container">
+            <div class="login-header">
+                <h1>券码核销系统</h1>
+                <p>请使用授权手机号登录</p>
+            </div>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="phone">手机号</label>
+                    <input type="tel" id="phone" placeholder="请输入手机号" maxlength="11" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" placeholder="请输入密码" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">登录</button>
+            </form>
+            
+            <div class="login-tips">
+                <p>测试账号：13800138000</p>
+                <p>测试密码：123456</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主功能页面 -->
+    <div id="mainPage" class="page">
+        <div class="container">
+            <!-- 导航栏 -->
+            <div class="navbar">
+                <h2>券码核销</h2>
+                <button id="logoutBtn" class="btn-text">退出</button>
+            </div>
+            
+            <!-- 核销表单 -->
+            <div class="verification-section">
+                <h3>券码核销</h3>
+                <form id="verificationForm" class="verification-form">
+                    <div class="form-group">
+                        <label for="couponCode">券码</label>
+                        <input type="text" id="couponCode" placeholder="请输入8位券码" 
+                               maxlength="8" style="text-transform: uppercase;" required>
+                        <small>请输入8位大写英文和数字组合</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="companySelect">企业名称</label>
+                        <div class="select-wrapper">
+                            <input type="text" id="companySearch" placeholder="搜索企业名称..." 
+                                   autocomplete="off">
+                            <select id="companySelect" required>
+                                <option value="">请选择企业</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">核销券码</button>
+                </form>
+            </div>
+            
+            <!-- 记录查询 -->
+            <div class="records-section">
+                <h3>核销记录</h3>
+                <div class="search-filters">
+                    <div class="form-group">
+                        <label for="dateFilter">查询日期</label>
+                        <input type="date" id="dateFilter">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="companyFilter">企业筛选</label>
+                        <select id="companyFilter">
+                            <option value="">全部企业</option>
+                        </select>
+                    </div>
+                    
+                    <button id="searchRecords" class="btn btn-secondary">查询记录</button>
+                </div>
+                
+                <div id="recordsList" class="records-list">
+                    <!-- 记录列表将在这里动态生成 -->
+                </div>
+                
+                <div id="pagination" class="pagination">
+                    <!-- 分页将在这里动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 消息提示 -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- 加载提示 -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>加载中...</p>
+    </div>
+    
+    <!-- 确认对话框 -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h4 id="confirmTitle">确认</h4>
+            <p id="confirmMessage"></p>
+            <div class="modal-actions">
+                <button id="confirmCancel" class="btn btn-secondary">取消</button>
+                <button id="confirmOk" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/api.js"></script>
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html> 

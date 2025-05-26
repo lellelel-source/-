@@ -1,0 +1,296 @@
+/* 移动端专用样式 */
+
+/* 移动端视口优化 */
+@media screen and (max-width: 768px) {
+    /* 防止横屏时字体缩放 */
+    html {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+    
+    /* 移动端容器优化 */
+    .container {
+        padding: 15px;
+        margin: 0;
+        max-width: 100%;
+    }
+    
+    /* 移动端登录页面 */
+    .login-header {
+        padding-top: 40px;
+    }
+    
+    .login-header h1 {
+        font-size: 24px;
+    }
+    
+    /* 移动端表单优化 */
+    .form-group input,
+    .form-group select {
+        font-size: 16px; /* 防止iOS缩放 */
+        padding: 14px 16px;
+    }
+    
+    /* 移动端按钮优化 */
+    .btn {
+        padding: 14px 24px;
+        font-size: 16px;
+        min-height: 48px; /* 符合移动端触摸标准 */
+    }
+    
+    /* 导航栏移动端优化 */
+    .navbar {
+        padding: 15px 0;
+    }
+    
+    .navbar h2 {
+        font-size: 20px;
+    }
+    
+    /* 功能区块移动端优化 */
+    .verification-section,
+    .records-section {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .verification-section h3,
+    .records-section h3 {
+        font-size: 18px;
+    }
+    
+    /* 搜索筛选移动端布局 */
+    .search-filters {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    /* 记录列表移动端优化 */
+    .record-item {
+        padding: 12px;
+    }
+    
+    .record-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 5px;
+    }
+    
+    .record-code {
+        font-size: 14px;
+    }
+    
+    .record-time {
+        font-size: 11px;
+    }
+    
+    .record-details {
+        font-size: 13px;
+    }
+    
+    /* 分页移动端优化 */
+    .pagination {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .pagination button {
+        padding: 6px 12px;
+        font-size: 14px;
+        min-width: 36px;
+    }
+    
+    /* 模态框移动端优化 */
+    .modal-content {
+        padding: 20px;
+        width: 95%;
+        max-width: 320px;
+    }
+    
+    .modal-content h4 {
+        font-size: 18px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-actions .btn {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    /* 消息提示移动端优化 */
+    .toast {
+        left: 10px;
+        right: 10px;
+        transform: none;
+        max-width: calc(100% - 20px);
+    }
+}
+
+/* 超小屏幕优化 */
+@media screen and (max-width: 375px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .login-header {
+        padding-top: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .login-header h1 {
+        font-size: 22px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .verification-section,
+    .records-section {
+        padding: 15px;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+}
+
+/* 横屏模式优化 */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .login-header {
+        padding-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .container {
+        min-height: auto;
+    }
+    
+    .verification-section,
+    .records-section {
+        margin-bottom: 20px;
+    }
+}
+
+/* 触摸设备优化 */
+@media (pointer: coarse) {
+    /* 增加触摸目标大小 */
+    .btn,
+    input,
+    select,
+    button {
+        min-height: 44px;
+    }
+    
+    /* 优化选择框的触摸体验 */
+    .select-wrapper select {
+        padding-right: 45px;
+        background-size: 20px;
+    }
+    
+    /* 分页按钮触摸优化 */
+    .pagination button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* iOS Safari 特殊优化 */
+@supports (-webkit-touch-callout: none) {
+    /* 修复iOS Safari输入框样式 */
+    .form-group input,
+    .form-group select {
+        -webkit-appearance: none;
+        border-radius: 8px;
+    }
+    
+    /* 修复iOS Safari按钮样式 */
+    .btn {
+        -webkit-appearance: none;
+        border-radius: 8px;
+    }
+    
+    /* 防止iOS Safari缩放 */
+    .form-group input[type="tel"],
+    .form-group input[type="password"],
+    .form-group input[type="text"] {
+        font-size: 16px;
+    }
+}
+
+/* Android Chrome 优化 */
+@media screen and (-webkit-min-device-pixel-ratio: 1) and (max-width: 768px) {
+    /* 优化Android设备上的输入体验 */
+    .form-group input:focus {
+        transform: none;
+        zoom: 1;
+    }
+}
+
+/* 无障碍访问优化 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .spinner {
+        animation: none;
+    }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    .btn-primary {
+        background: #000;
+        border: 2px solid #000;
+    }
+    
+    .form-group input,
+    .form-group select {
+        border: 2px solid #000;
+    }
+    
+    .record-item {
+        border: 2px solid #000;
+    }
+}
+
+/* 暗色模式支持 */
+@media (prefers-color-scheme: dark) {
+    /* 注意：当前设计主要针对亮色模式，暗色模式可以后续添加 */
+    /* 如需支持暗色模式，可以在这里添加相应样式 */
+}
+
+/* 打印样式 */
+@media print {
+    .navbar,
+    .btn,
+    .loading,
+    .toast,
+    .modal {
+        display: none !important;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+        background: white;
+    }
+    
+    .verification-section,
+    .records-section {
+        box-shadow: none;
+        border: 1px solid #000;
+        break-inside: avoid;
+    }
+} 
