@@ -28,6 +28,15 @@ app.use(limiter);
 // 静态文件服务
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 健康检查端点
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 // 路由设置
 app.use('/api/auth', authRoutes);
 app.use('/api/coupon', couponRoutes);
@@ -44,8 +53,17 @@ app.use((req, res) => {
 
 // 错误处理中间件
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: '服务器内部错误' });
+  console.error('服务器错误:', err);
+  console.error('错误堆栈:', err.stack);
+  
+  // 根据错误类型返回不同的响应
+  if (err.code === 'ECONNREFUSED') {
+    res.status(503).json({ error: '数据库连接失败，请稍后重试' });
+  } else if (err.code === 'ER_ACCESS_DENIED_ERROR') {
+    res.status(503).json({ error: '数据库认证失败' });
+  } else {
+    res.status(500).json({ error: '服务器内部错误' });
+  }
 });
 
 /**
@@ -53,18 +71,49 @@ app.use((err, req, res, next) => {
  */
 async function startServer() {
   try {
-    // 初始化数据库
-    await initDatabase();
-    console.log('数据库初始化成功');
+    console.log('开始启动服务器...');
+    console.log('环境:', process.env.NODE_ENV || 'development');
     
-    app.listen(PORT, () => {
-      console.log(`服务器运行在端口 ${PORT}`);
-      console.log(`访问地址: http://localhost:${PORT}`);
-    });
+    // 在Vercel环境中，只有在有数据库配置时才初始化数据库
+    if (process.env.DATABASE_URL || (process.env.DB_HOST && process.env.DB_USER)) {
+      console.log('检测到数据库配置，开始初始化数据库...');
+      try {
+        await initDatabase();
+        console.log('数据库初始化成功');
+      } catch (error) {
+        console.error('数据库初始化失败:', error);
+        // 在生产环境中，如果数据库初始化失败，仍然启动服务器但记录错误
+        if (process.env.NODE_ENV === 'production') {
+          console.warn('生产环境数据库初始化失败，服务器将继续启动但功能可能受限');
+        } else {
+          throw error;
+        }
+      }
+    } else {
+      console.warn('未检测到数据库配置，跳过数据库初始化');
+    }
+    
+    // 在Vercel环境中，不需要手动启动监听
+    if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log(`服务器运行在端口 ${PORT}`);
+        console.log(`访问地址: http://localhost:${PORT}`);
+      });
+    } else {
+      console.log('Vercel环境检测到，跳过手动启动监听');
+    }
   } catch (error) {
     console.error('启动服务器失败:', error);
-    process.exit(1);
+    if (process.env.NODE_ENV !== 'production') {
+      process.exit(1);
+    }
   }
 }
 
-startServer(); 
+// 只在非Vercel环境或开发环境中启动服务器
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  startServer();
+}
+
+// 导出app供Vercel使用
+module.exports = app; 
